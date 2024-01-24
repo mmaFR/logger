@@ -42,99 +42,154 @@ type logFunc func(structure, function, msg string, id int, vars ...any)
 type Logger struct {
 	logger *log.Logger
 	// Log
-	LogEmerge   logFunc
-	LogAlert    logFunc
-	LogCritical logFunc
-	LogError    logFunc
-	LogWarning  logFunc
-	LogNotice   logFunc
-	LogInfo     logFunc
-	LogDebug    logFunc
-	LogTrace    logFunc
+	logEmerge   logFunc
+	logAlert    logFunc
+	logCritical logFunc
+	logError    logFunc
+	logWarning  logFunc
+	logNotice   logFunc
+	logInfo     logFunc
+	logDebug    logFunc
+	logTrace    logFunc
 
 	//Fatal
-	FatalEmerge   logFunc
-	FatalAlert    logFunc
-	FatalCritical logFunc
-	FatalError    logFunc
-	FatalWarning  logFunc
-	FatalNotice   logFunc
-	FatalInfo     logFunc
-	FatalDebug    logFunc
-	FatalTrace    logFunc
+	fatalEmerge   logFunc
+	fatalAlert    logFunc
+	fatalCritical logFunc
+	fatalError    logFunc
+	fatalWarning  logFunc
+	fatalNotice   logFunc
+	fatalInfo     logFunc
+	fatalDebug    logFunc
+	fatalTrace    logFunc
+}
+
+func (l *Logger) LogEmerge(structure, function, msg string, id int, vars ...any) {
+	l.logEmerge(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogAlert(structure, function, msg string, id int, vars ...any) {
+	l.logAlert(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogCritical(structure, function, msg string, id int, vars ...any) {
+	l.logCritical(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogError(structure, function, msg string, id int, vars ...any) {
+	l.logError(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogWarning(structure, function, msg string, id int, vars ...any) {
+	l.logWarning(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogNotice(structure, function, msg string, id int, vars ...any) {
+	l.logNotice(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogInfo(structure, function, msg string, id int, vars ...any) {
+	l.logInfo(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogDebug(structure, function, msg string, id int, vars ...any) {
+	l.logDebug(structure, function, msg, id, vars...)
+}
+func (l *Logger) LogTrace(structure, function, msg string, id int, vars ...any) {
+	l.logTrace(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalEmerge(structure, function, msg string, id int, vars ...any) {
+	l.fatalEmerge(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalCritical(structure, function, msg string, id int, vars ...any) {
+	l.fatalCritical(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalAlert(structure, function, msg string, id int, vars ...any) {
+	l.fatalAlert(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalError(structure, function, msg string, id int, vars ...any) {
+	l.fatalError(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalWarning(structure, function, msg string, id int, vars ...any) {
+	l.fatalWarning(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalNotice(structure, function, msg string, id int, vars ...any) {
+	l.fatalNotice(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalInfo(structure, function, msg string, id int, vars ...any) {
+	l.fatalInfo(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalDebug(structure, function, msg string, id int, vars ...any) {
+	l.fatalDebug(structure, function, msg, id, vars...)
+}
+func (l *Logger) FatalTrace(structure, function, msg string, id int, vars ...any) {
+	l.fatalTrace(structure, function, msg, id, vars...)
 }
 
 func (l *Logger) SetVerbosity(level LogLevel) {
 	for lvl := LogLevelNull; lvl <= LogLevelTrace; lvl++ {
 		switch lvl {
 		case LogLevelNull:
-			l.LogEmerge = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogAlert = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogCritical = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogError = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogWarning = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogNotice = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogInfo = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogDebug = func(structure, function, msg string, id int, vars ...any) {}
-			l.LogTrace = func(structure, function, msg string, id int, vars ...any) {}
+			l.logEmerge = func(structure, function, msg string, id int, vars ...any) {}
+			l.logAlert = func(structure, function, msg string, id int, vars ...any) {}
+			l.logCritical = func(structure, function, msg string, id int, vars ...any) {}
+			l.logError = func(structure, function, msg string, id int, vars ...any) {}
+			l.logWarning = func(structure, function, msg string, id int, vars ...any) {}
+			l.logNotice = func(structure, function, msg string, id int, vars ...any) {}
+			l.logInfo = func(structure, function, msg string, id int, vars ...any) {}
+			l.logDebug = func(structure, function, msg string, id int, vars ...any) {}
+			l.logTrace = func(structure, function, msg string, id int, vars ...any) {}
 
-			l.FatalEmerge = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalEmerge = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelEmergePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelEmergePrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalAlert = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalAlert = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelAlertPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelAlertPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalCritical = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalCritical = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelCriticalPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelCriticalPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalError = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalError = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelErrorPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelErrorPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalWarning = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalWarning = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelWarningPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelWarningPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalNotice = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalNotice = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelNoticePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelNoticePrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalInfo = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalInfo = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelInfoPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelInfoPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalDebug = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalDebug = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelDebugPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
 					l.logger.Fatalf(logPatternWithId, logLevelDebugPrefix, structure, function, id, fmt.Sprintf(msg, vars...))
 				}
 			}
-			l.FatalTrace = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalTrace = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelTracePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -143,7 +198,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelEmerge:
 			if lvl <= level {
-				l.LogEmerge = func(structure, function, msg string, id int, vars ...any) {
+				l.logEmerge = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelEmergePrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -151,9 +206,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogEmerge = func(structure, function, msg string, id int, vars ...any) {}
+				l.logEmerge = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalEmerge = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalEmerge = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelEmergePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -162,7 +217,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelAlert:
 			if lvl <= level {
-				l.LogAlert = func(structure, function, msg string, id int, vars ...any) {
+				l.logAlert = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelAlertPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -170,9 +225,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogAlert = func(structure, function, msg string, id int, vars ...any) {}
+				l.logAlert = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalAlert = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalAlert = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelAlertPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -181,7 +236,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelCritical:
 			if lvl <= level {
-				l.LogCritical = func(structure, function, msg string, id int, vars ...any) {
+				l.logCritical = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelCriticalPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -189,9 +244,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogCritical = func(structure, function, msg string, id int, vars ...any) {}
+				l.logCritical = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalCritical = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalCritical = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelCriticalPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -200,7 +255,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelError:
 			if lvl <= level {
-				l.LogError = func(structure, function, msg string, id int, vars ...any) {
+				l.logError = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelErrorPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -208,9 +263,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogError = func(structure, function, msg string, id int, vars ...any) {}
+				l.logError = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalError = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalError = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelErrorPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -219,7 +274,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelWarning:
 			if lvl <= level {
-				l.LogWarning = func(structure, function, msg string, id int, vars ...any) {
+				l.logWarning = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelWarningPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -227,9 +282,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogWarning = func(structure, function, msg string, id int, vars ...any) {}
+				l.logWarning = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalWarning = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalWarning = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelWarningPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -238,7 +293,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelNotice:
 			if lvl <= level {
-				l.LogNotice = func(structure, function, msg string, id int, vars ...any) {
+				l.logNotice = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelNoticePrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -246,9 +301,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogNotice = func(structure, function, msg string, id int, vars ...any) {}
+				l.logNotice = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalNotice = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalNotice = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelNoticePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -257,7 +312,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelInfo:
 			if lvl <= level {
-				l.LogInfo = func(structure, function, msg string, id int, vars ...any) {
+				l.logInfo = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelInfoPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -265,9 +320,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogInfo = func(structure, function, msg string, id int, vars ...any) {}
+				l.logInfo = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalInfo = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalInfo = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelInfoPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -276,7 +331,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelDebug:
 			if lvl <= level {
-				l.LogDebug = func(structure, function, msg string, id int, vars ...any) {
+				l.logDebug = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelDebugPrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -284,9 +339,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogDebug = func(structure, function, msg string, id int, vars ...any) {}
+				l.logDebug = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalDebug = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalDebug = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelDebugPrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {
@@ -295,7 +350,7 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 			}
 		case LogLevelTrace:
 			if lvl <= level {
-				l.LogTrace = func(structure, function, msg string, id int, vars ...any) {
+				l.logTrace = func(structure, function, msg string, id int, vars ...any) {
 					if id < 0 {
 						l.logger.Printf(logPattern, logLevelTracePrefix, structure, function, fmt.Sprintf(msg, vars...))
 					} else {
@@ -303,9 +358,9 @@ func (l *Logger) SetVerbosity(level LogLevel) {
 					}
 				}
 			} else {
-				l.LogTrace = func(structure, function, msg string, id int, vars ...any) {}
+				l.logTrace = func(structure, function, msg string, id int, vars ...any) {}
 			}
-			l.FatalTrace = func(structure, function, msg string, id int, vars ...any) {
+			l.fatalTrace = func(structure, function, msg string, id int, vars ...any) {
 				if id < 0 {
 					l.logger.Fatalf(logPattern, logLevelTracePrefix, structure, function, fmt.Sprintf(msg, vars...))
 				} else {

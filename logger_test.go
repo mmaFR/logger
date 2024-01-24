@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"strings"
 	"testing"
 )
@@ -271,66 +272,83 @@ func TestLogTrace(t *testing.T) {
 
 func BenchmarkLogSimple(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogNotice("struc", "func", "message", -1)
+		logger.LogNotice("struct", "func", "message", -1)
 	}
 }
 func BenchmarkLogWithId(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogNotice("struc", "func", "message", i)
+		logger.LogNotice("struct", "func", "message", i)
 	}
 }
 func BenchmarkLogWithVars(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogNotice("struc", "func", "message %s", -1, "test")
+		logger.LogNotice("struct", "func", "message %s", -1, "test")
 	}
 }
 func BenchmarkLogWithVarsAndId(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogNotice("struc", "func", "message %s", i, "test")
+		logger.LogNotice("struct", "func", "message %s", i, "test")
+	}
+}
+func BenchmarkDefaultLogger(b *testing.B) {
+	b.ReportAllocs()
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *log.Logger = log.New(buffer, "", log.Ldate|log.Lmicroseconds)
+
+	for i := 0; i < b.N; i++ {
+		logger.Printf(logPattern, logLevelCriticalPrefix, "struct", "func", "message")
 	}
 }
 
 func BenchmarkLogNullSimple(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogDebug("struc", "func", "message", -1)
+		logger.LogDebug("struct", "func", "message", -1)
 	}
 }
 func BenchmarkLogNullWithId(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogDebug("struc", "func", "message", i)
+		logger.LogDebug("struct", "func", "message", i)
 	}
 }
 func BenchmarkLogNullWithVars(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogDebug("struc", "func", "message %s", -1, "test")
+		logger.LogDebug("struct", "func", "message %s", -1, "test")
 	}
 }
 func BenchmarkLogNullWithVarsAndId(b *testing.B) {
 	b.ReportAllocs()
-	var logger *Logger = NewLogger(LogLevelNotice, io.Discard)
+	var buffer *bytes.Buffer = bytes.NewBuffer([]byte{})
+	var logger *Logger = NewLogger(LogLevelNotice, buffer)
 
 	for i := 0; i < b.N; i++ {
-		logger.LogDebug("struc", "func", "message %s", i, "test")
+		logger.LogDebug("struct", "func", "message %s", i, "test")
 	}
 }
