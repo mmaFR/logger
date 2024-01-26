@@ -85,7 +85,10 @@ func NewLogLevel(l uint8) LogLevel {
 type logFunc func(structure, function, msg string, id int, vars ...any)
 
 type Logger struct {
-	logger *log.Logger
+	logger           *log.Logger
+	defaultStructure string
+	defaultFunction  string
+
 	// Log
 	logEmerge   logFunc
 	logAlert    logFunc
@@ -107,6 +110,13 @@ type Logger struct {
 	fatalInfo     logFunc
 	fatalDebug    logFunc
 	fatalTrace    logFunc
+}
+
+func (l *Logger) SetDefaultStructure(s string) {
+	l.defaultStructure = s
+}
+func (l *Logger) SetDefaultFunction(s string) {
+	l.defaultFunction = s
 }
 
 func (l *Logger) LogEmerge(structure, function, msg string, id int, vars ...any) {
@@ -162,6 +172,9 @@ func (l *Logger) FatalDebug(structure, function, msg string, id int, vars ...any
 }
 func (l *Logger) FatalTrace(structure, function, msg string, id int, vars ...any) {
 	l.fatalTrace(structure, function, msg, id, vars...)
+}
+func (l *Logger) Errorf(format string, args ...interface{}) {
+	l.logEmerge(l.defaultStructure, l.defaultFunction, format, -1, args...)
 }
 
 func (l *Logger) SetVerbosity(level LogLevel) {
