@@ -73,6 +73,15 @@ func GetLevelName(level LogLevel) string {
 }
 
 type LogLevel uint8
+
+func NewLogLevel(l uint8) LogLevel {
+	if LogLevel(l) > LogLevelTrace {
+		return LogLevelTrace
+	} else {
+		return LogLevel(l)
+	}
+}
+
 type logFunc func(structure, function, msg string, id int, vars ...any)
 
 type Logger struct {
