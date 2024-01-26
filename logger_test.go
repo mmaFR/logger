@@ -269,6 +269,60 @@ func TestLogDebug(t *testing.T) {
 func TestLogTrace(t *testing.T) {
 	testLogGeneric(t, LogLevelTrace)
 }
+func TestGetLevelName(t *testing.T) {
+	type level struct {
+		l LogLevel
+		n string
+	}
+	var tests []level = []level{
+		{
+			l: LogLevelEmerge,
+			n: logLevelEmergeName,
+		},
+		{
+			l: LogLevelAlert,
+			n: logLevelAlertName,
+		},
+		{
+			l: LogLevelCritical,
+			n: logLevelCriticalName,
+		},
+		{
+			l: LogLevelError,
+			n: logLevelErrorName,
+		},
+		{
+			l: LogLevelWarning,
+			n: logLevelWarningName,
+		},
+		{
+			l: LogLevelNotice,
+			n: logLevelNoticeName,
+		},
+		{
+			l: LogLevelInfo,
+			n: logLevelInfoName,
+		},
+		{
+			l: LogLevelDebug,
+			n: logLevelDebugName,
+		},
+		{
+			l: LogLevelTrace,
+			n: logLevelTraceName,
+		},
+		{
+			l: 10,
+			n: "invalid log level",
+		},
+	}
+
+	for _, test := range tests {
+		if GetLevelName(test.l) != test.n {
+			t.Errorf("invalid name for the log level %d, got %s, expecting %s", test.l, GetLevelName(test.l), test.n)
+		}
+	}
+}
 
 func BenchmarkLogSimple(b *testing.B) {
 	b.ReportAllocs()

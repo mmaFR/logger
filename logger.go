@@ -20,21 +20,57 @@ const (
 )
 
 const (
-	logLevelEmergePrefix   string = "[EMERGE  ]"
-	logLevelAlertPrefix    string = "[ALTER   ]"
-	logLevelCriticalPrefix string = "[CRITICAL]"
-	logLevelErrorPrefix    string = "[ERROR   ]"
-	logLevelWarningPrefix  string = "[WARNING ]"
-	logLevelNoticePrefix   string = "[NOTICE  ]"
-	logLevelInfoPrefix     string = "[INFO    ]"
-	logLevelDebugPrefix    string = "[DEBUG   ]"
-	logLevelTracePrefix    string = "[TRACE   ]"
+	logLevelEmergeName   string = "EMERGE"
+	logLevelAlertName    string = "ALERT"
+	logLevelCriticalName string = "CRITICAL"
+	logLevelErrorName    string = "ERROR"
+	logLevelWarningName  string = "WARNING"
+	logLevelNoticeName   string = "NOTICE"
+	logLevelInfoName     string = "INFO"
+	logLevelDebugName    string = "DEBUG"
+	logLevelTraceName    string = "TRACE"
+)
+
+const (
+	logLevelEmergePrefix   string = "[" + logLevelEmergeName + "  ]"
+	logLevelAlertPrefix    string = "[" + logLevelAlertName + "   ]"
+	logLevelCriticalPrefix string = "[" + logLevelCriticalName + "]"
+	logLevelErrorPrefix    string = "[" + logLevelErrorName + "   ]"
+	logLevelWarningPrefix  string = "[" + logLevelWarningName + " ]"
+	logLevelNoticePrefix   string = "[" + logLevelNoticeName + "  ]"
+	logLevelInfoPrefix     string = "[" + logLevelInfoName + "    ]"
+	logLevelDebugPrefix    string = "[" + logLevelDebugName + "   ]"
+	logLevelTracePrefix    string = "[" + logLevelTraceName + "   ]"
 )
 
 const (
 	logPattern       string = "%s %s -> %s: %s\n"
 	logPatternWithId string = "%s %s -> %s-%d: %s\n"
 )
+
+var levelMap map[LogLevel]string = map[LogLevel]string{
+	LogLevelNull:     "NONE",
+	LogLevelEmerge:   logLevelEmergeName,
+	LogLevelAlert:    logLevelAlertName,
+	LogLevelCritical: logLevelCriticalName,
+	LogLevelError:    logLevelErrorName,
+	LogLevelWarning:  logLevelWarningName,
+	LogLevelNotice:   logLevelNoticeName,
+	LogLevelInfo:     logLevelInfoName,
+	LogLevelDebug:    logLevelDebugName,
+	LogLevelTrace:    logLevelTraceName,
+}
+
+func GetLevelName(level LogLevel) string {
+	var name string
+	var exists bool
+	name, exists = levelMap[level]
+	if !exists {
+		return "invalid log level"
+	} else {
+		return name
+	}
+}
 
 type LogLevel uint8
 type logFunc func(structure, function, msg string, id int, vars ...any)
